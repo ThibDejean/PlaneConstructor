@@ -17,52 +17,100 @@ namespace PlaneConstructor.Business
             set { _lineInformation = value; }
         }
 
-        #region get infos ...
-        public string GetLevel()
+        public Line()
         {
-            return _lineInformation[0];
+
         }
 
-        public string GetArt()
+        #region getter
+        public int Level
         {
-            return _lineInformation[1];
+            get
+            {
+                int i = TryToParse(_lineInformation[0]);
+                return i;
+            }
         }
 
-        public string GetRef()
+        public int Art
         {
-            return _lineInformation[2];
+            get
+            {
+                int i = TryToParse(_lineInformation[1]);
+                return i;
+            }
         }
 
-        public string GetDesignation()
+        public string Ref
         {
-            return _lineInformation[3];
+            get { return _lineInformation[2]; }
         }
 
-        public string GetCoef()
+        public string Designation
         {
-            return _lineInformation[4];
+            get { return _lineInformation[3];}
         }
 
-        public string GetUnity()
+        public double Coef
         {
-            return _lineInformation[5];
+            get
+            {
+                try
+                {
+                    return Double.Parse(_lineInformation[4]);
+                }
+                catch (FormatException)
+                {
+                    throw new FormatException("Il existe une erreur dans le fichier Excel, un nombre est attendu");
+                }
+            }
         }
 
-        public string GetDO()
+        public string Unity
         {
-            return _lineInformation[6];
+            get { return _lineInformation[5]; }
         }
 
-        public string GetCompoCost()
+        public int DO
         {
-            return _lineInformation[7];
+            get
+            {
+                int i = TryToParse(_lineInformation[6]);
+                return i;
+            }
         }
 
-        public string GetHourOfJob()
+        public int CompoCost
         {
-            return _lineInformation[8];
+            get
+            {
+                int i = TryToParse(_lineInformation[7]);
+                return i;
+            }
+        }
+
+        public int HourOfJob
+        {
+            get
+            {
+                int i = TryToParse(_lineInformation[8]);
+                return i;
+            }
         }
         #endregion
 
+        public int TryToParse(string value)
+        {
+            int number;
+            bool result = Int32.TryParse(value, out number);
+            if (result)
+            {
+                return number;
+            }
+            else
+            {
+                throw new FormatException("Il existe une erreure dans el fichier Excel, un nombre est attendu");
+            }
+        }
     }
 }
